@@ -1,112 +1,132 @@
-﻿# Hexagonal Demo
+# Hexagonal Demo
 
-API REST construida con Spring Boot, Gradle, PostgreSQL y una estructura inspirada en arquitectura hexagonal.
+API REST construida con Spring Boot, Gradle y PostgreSQL.
 
-## Requisitos
+Este proyecto esta pensado para que cada integrante configure su propia base de datos local sin tener que editar el codigo fuente.
+
+## Antes de empezar
+
+Necesitan tener instalado:
 
 - Java 17
-- PostgreSQL 14 o superior
+- PostgreSQL
 - Git
 
-## Tecnologias principales
+## Idea general
 
-- Spring Boot
-- Spring Web
-- Spring Data JPA
-- PostgreSQL
-- Gradle
+La aplicacion toma la configuracion desde variables como:
 
-## Configuracion de base de datos
+- `DB_URL`
+- `DB_USERNAME`
+- `DB_PASSWORD`
+- `SERVER_PORT`
 
-El proyecto usa PostgreSQL y por defecto intenta conectarse a esta base:
+Pero para que sea mas facil para el equipo, tambien puede leer esas variables desde un archivo local llamado `.env.properties`.
 
-- Base de datos: `hexagonal`
-- Host: `localhost`
-- Puerto: `5432`
-- Usuario: `postgres`
-- Password: `adminsan`
+Ese archivo:
 
-Pueden crear la base de datos con este comando:
+- Se crea en la raiz del proyecto
+- Guarda la configuracion personal de cada compañero
+- No se sube a Git
 
-```sql
-CREATE DATABASE hexagonal;
-```
+## Paso a paso para correr el proyecto
 
-No hace falta crear las tablas manualmente. Hibernate las genera o actualiza al iniciar la aplicacion porque `ddl-auto` esta configurado en `update`.
-
-## Variables de entorno
-
-La aplicacion ya soporta variables de entorno para no tener que modificar el codigo.
-
-Variables disponibles:
-
-- `SERVER_PORT`: puerto donde corre la API. Por defecto `8080`
-- `DB_URL`: URL JDBC de PostgreSQL. Por defecto `jdbc:postgresql://localhost:5432/hexagonal`
-- `DB_USERNAME`: usuario de la base de datos. Por defecto `postgres`
-- `DB_PASSWORD`: password de la base de datos. Por defecto `adminsan`
-- `DDL_AUTO`: estrategia de Hibernate. Por defecto `update`
-- `SHOW_SQL`: mostrar consultas SQL en consola. Por defecto `true`
-
-### Ejemplo en PowerShell
-
-```powershell
-$env:DB_URL="jdbc:postgresql://localhost:5432/hexagonal"
-$env:DB_USERNAME="postgres"
-$env:DB_PASSWORD="adminsan"
-$env:SERVER_PORT="8080"
-```
-
-### Ejemplo en CMD
-
-```cmd
-set DB_URL=jdbc:postgresql://localhost:5432/hexagonal
-set DB_USERNAME=postgres
-set DB_PASSWORD=adminsan
-set SERVER_PORT=8080
-```
-
-## Como correr el proyecto
-
-1. Clonar el repositorio:
+### 1. Clonar el repositorio
 
 ```bash
 git clone <url-del-repo>
 cd demo
 ```
 
-2. Crear la base de datos `hexagonal` en PostgreSQL.
+### 2. Crear la base de datos en PostgreSQL
 
-3. Configurar las variables de entorno si van a usar credenciales diferentes a las que vienen por defecto.
+Cada persona puede usar el nombre de base de datos que quiera. No tiene que ser una sola fija para todos.
 
-4. Levantar la aplicacion:
+Ejemplo:
 
-```bash
-./gradlew bootRun
+```sql
+CREATE DATABASE hexagonal;
 ```
 
-En Windows tambien pueden usar:
+No hace falta crear tablas manualmente. Spring Boot las crea o actualiza al iniciar porque Hibernate usa `update`.
+
+### 3. Crear el archivo de configuracion local
+
+En la raiz del proyecto van a encontrar un archivo de ejemplo llamado `.env.properties.example`.
+
+Lo que deben hacer es:
+
+1. Copiar ese archivo
+2. Renombrarlo a `.env.properties`
+3. Poner ahi los datos de su propia base de datos
+
+El archivo debe quedar asi:
+
+```properties
+SERVER_PORT=8080
+DB_URL=jdbc:postgresql://localhost:5432/hexagonal
+DB_USERNAME=postgres
+DB_PASSWORD=tu_password
+DDL_AUTO=update
+SHOW_SQL=true
+```
+
+Importante:
+
+- `DB_URL` debe apuntar a la base de datos que cada uno creo en su computador
+- `DB_USERNAME` y `DB_PASSWORD` deben ser los datos reales de su PostgreSQL
+- Lo que aparece en el ejemplo no es una configuracion obligatoria, solo una guia
+
+### 4. Explicacion corta de cada variable
+
+- `SERVER_PORT`: puerto donde arranca la API
+- `DB_URL`: direccion de conexion a PostgreSQL
+- `DB_USERNAME`: usuario de PostgreSQL
+- `DB_PASSWORD`: clave de PostgreSQL
+- `DDL_AUTO`: comportamiento de Hibernate con las tablas
+- `SHOW_SQL`: muestra consultas SQL en consola
+
+Ejemplo de `DB_URL`:
+
+```text
+jdbc:postgresql://localhost:5432/nombre_de_tu_base
+```
+
+### 5. Ejecutar el proyecto
+
+En Windows:
 
 ```powershell
 .\gradlew.bat bootRun
 ```
 
-La API queda disponible en:
+En Linux o macOS:
+
+```bash
+./gradlew bootRun
+```
+
+Si todo sale bien, la API queda disponible en:
 
 ```text
 http://localhost:8080
 ```
 
-## Ejecutar pruebas
+## Si no quieren usar archivo
 
-```bash
-./gradlew test
-```
+Tambien pueden configurar las variables manualmente en la terminal.
 
-En Windows:
+Ejemplo en PowerShell:
 
 ```powershell
-.\gradlew.bat test
+$env:DB_URL="jdbc:postgresql://localhost:5432/hexagonal"
+$env:DB_USERNAME="postgres"
+$env:DB_PASSWORD="tu_password"
+$env:SERVER_PORT="8080"
+.\gradlew.bat bootRun
 ```
+
+Pero para el equipo se recomienda usar `.env.properties`, porque es mas simple y evita cambiar el codigo.
 
 ## Endpoints principales
 
@@ -206,8 +226,23 @@ Ejemplo:
 }
 ```
 
-## Notas
+## Ejecutar pruebas
 
-- Si PostgreSQL no esta corriendo, la aplicacion no va a iniciar.
-- Si cambian las credenciales de la base de datos, actualicen las variables de entorno antes de ejecutar el proyecto.
-- Como `ddl-auto=update`, la estructura de tablas puede cambiar automaticamente al iniciar. Para produccion conviene manejar migraciones.
+En Windows:
+
+```powershell
+.\gradlew.bat test
+```
+
+En Linux o macOS:
+
+```bash
+./gradlew test
+```
+
+## Problemas comunes
+
+- Si PostgreSQL no esta corriendo, la app no inicia
+- Si el usuario o la clave estan mal, Spring Boot falla al conectarse
+- Si la base de datos no existe, tambien falla el arranque
+- Si cambian de configuracion, deben actualizar su `.env.properties`
