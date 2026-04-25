@@ -7,7 +7,7 @@ Este proyecto esta pensado para que cada integrante configure su propia base de 
 # Autores 
 
 - Geovanny Paez - 1093294660
-- Camilo Jaimes - 
+- Camilo Jaimes - 1005059642
 - Edinson Palacio - 1030040009
 - Miller Hernández - 1094045081
   
