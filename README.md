@@ -4,6 +4,13 @@ API REST construida con Spring Boot, Gradle y PostgreSQL.
 
 Este proyecto esta pensado para que cada integrante configure su propia base de datos local sin tener que editar el codigo fuente.
 
+# Autores 
+
+- Geovanny Paez - 1093294660
+- Camilo Jaimes - 
+- Edinson Palacio - 1030040009
+- Miller Hernández - 1094045081
+  
 ## Antes de empezar
 
 Necesitan tener instalado:
