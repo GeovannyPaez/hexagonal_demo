@@ -33,7 +33,7 @@ dependencies {
 
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
-	runtimeOnly 'org.postgresql:postgresql'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'  // ← uno solo cubre todo
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'

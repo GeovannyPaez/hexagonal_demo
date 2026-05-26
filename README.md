@@ -1,6 +1,6 @@
 # Hexagonal Demo
 
-API REST construida con Spring Boot, Gradle y PostgreSQL.
+API REST construida con Spring Boot, Gradle y MySQL.
 
 Este proyecto esta pensado para que cada integrante configure su propia base de datos local sin tener que editar el codigo fuente.
 
@@ -9,7 +9,7 @@ Este proyecto esta pensado para que cada integrante configure su propia base de 
 Necesitan tener instalado:
 
 - Java 17
-- PostgreSQL
+- MySQL
 - Git
 
 ## Idea general
@@ -38,7 +38,7 @@ git clone <url-del-repo>
 cd demo
 ```
 
-### 2. Crear la base de datos en PostgreSQL
+### 2. Crear la base de datos en MySQL
 
 Cada persona puede usar el nombre de base de datos que quiera. No tiene que ser una sola fija para todos.
 
@@ -64,8 +64,8 @@ El archivo debe quedar asi:
 
 ```properties
 SERVER_PORT=8080
-DB_URL=jdbc:postgresql://localhost:5432/hexagonal
-DB_USERNAME=postgres
+DB_URL=jdbc:mysql://localhost:3306/hexagonal
+DB_USERNAME=root
 DB_PASSWORD=tu_password
 DDL_AUTO=update
 SHOW_SQL=true
@@ -74,22 +74,22 @@ SHOW_SQL=true
 Importante:
 
 - `DB_URL` debe apuntar a la base de datos que cada uno creo en su computador
-- `DB_USERNAME` y `DB_PASSWORD` deben ser los datos reales de su PostgreSQL
+- `DB_USERNAME` y `DB_PASSWORD` deben ser los datos reales de su MySQL
 - Lo que aparece en el ejemplo no es una configuracion obligatoria, solo una guia
 
 ### 4. Explicacion corta de cada variable
 
 - `SERVER_PORT`: puerto donde arranca la API
-- `DB_URL`: direccion de conexion a PostgreSQL
-- `DB_USERNAME`: usuario de PostgreSQL
-- `DB_PASSWORD`: clave de PostgreSQL
+- `DB_URL`: direccion de conexion a MySQL
+- `DB_USERNAME`: usuario de MySQL
+- `DB_PASSWORD`: clave de MySQL
 - `DDL_AUTO`: comportamiento de Hibernate con las tablas
 - `SHOW_SQL`: muestra consultas SQL en consola
 
 Ejemplo de `DB_URL`:
 
 ```text
-jdbc:postgresql://localhost:5432/nombre_de_tu_base
+jdbc:mysql://localhost:3306/nombre_de_tu_base
 ```
 
 ### 5. Ejecutar el proyecto
@@ -119,8 +119,8 @@ Tambien pueden configurar las variables manualmente en la terminal.
 Ejemplo en PowerShell:
 
 ```powershell
-$env:DB_URL="jdbc:postgresql://localhost:5432/hexagonal"
-$env:DB_USERNAME="postgres"
+$env:DB_URL="jdbc:mysql://localhost:3306/hexagonal"
+$env:DB_USERNAME="root"
 $env:DB_PASSWORD="tu_password"
 $env:SERVER_PORT="8080"
 .\gradlew.bat bootRun
@@ -242,7 +242,8 @@ En Linux o macOS:
 
 ## Problemas comunes
 
-- Si PostgreSQL no esta corriendo, la app no inicia
+- Si MySQL no esta corriendo, la app no inicia
 - Si el usuario o la clave estan mal, Spring Boot falla al conectarse
 - Si la base de datos no existe, tambien falla el arranque
 - Si cambian de configuracion, deben actualizar su `.env.properties`
+
